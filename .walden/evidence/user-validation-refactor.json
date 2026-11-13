@@ -1,0 +1,173 @@
+{
+  "schema_version": "v1alpha2",
+  "feature": "user-validation-refactor",
+  "tasks": {
+    "1.1": {
+      "task_fingerprint": "sha256:f3dae6be26f31e1692cd5a83e2398b9b93fecde67dc0e7a23bf6f14129523942",
+      "task_fingerprint_scheme": "walden/task-definition/v2",
+      "execution": {
+        "origin": "verify",
+        "policy": "verify-purity/v1",
+        "assertion_result": "passed",
+        "integrity": "pure",
+        "before_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+        "after_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37"
+      },
+      "requirements_fingerprint": "sha256:c88cccbdc4fd66ed361bd2e5081d04a14e6854e83f3c263545b7ae49bd5f65d1",
+      "design_fingerprint": "sha256:cf550a0d3d8f471529fce8d08faaf11483e991654bce9528ce64c2c0db4ca1cf",
+      "tasks_fingerprint": "sha256:c17debb641edec2c665bcadc6557652893568215735dd0e2b4d7fb805d1b5d3f",
+      "code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+      "profile": {
+        "platform": "linux/amd64",
+        "walden": "v0.14.0"
+      },
+      "steps": [
+        {
+          "command": [
+            "python3",
+            "-B",
+            "-c",
+            "import utils\ndef msg(f, v):\n    try:\n        f(v)\n    except ValueError as e:\n        return str(e)\nassert msg(utils.validate_name, '  ') == 'name is required'\nassert msg(utils.validate_name, None) == 'name is required'\nassert msg(utils.validate_email, 'nomail') == 'invalid email'\nassert msg(utils.validate_email, None) == 'invalid email'\nassert [msg(utils.validate_age, a) for a in (None, -1, 121)] == ['invalid age'] * 3\nassert all(msg(utils.validate_age, a) is None for a in (0, 120))\nassert msg(utils.validate_name, 'A') is None and msg(utils.validate_email, 'a@b.it') is None\nprint('validators ok')"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:3104b0993d54f577f22fa96aad486243da98d3f315e8c638171a0f56d1634553"
+        }
+      ],
+      "result": "passed",
+      "verified_at": "2026-11-13T11:43:58Z"
+    },
+    "1.2": {
+      "task_fingerprint": "sha256:fc1bc6b6f147c98c8076a333d81b548b2978520626ae57799b7c1f4599821198",
+      "task_fingerprint_scheme": "walden/task-definition/v2",
+      "execution": {
+        "origin": "verify",
+        "policy": "verify-purity/v1",
+        "assertion_result": "passed",
+        "integrity": "pure",
+        "before_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+        "after_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37"
+      },
+      "requirements_fingerprint": "sha256:c88cccbdc4fd66ed361bd2e5081d04a14e6854e83f3c263545b7ae49bd5f65d1",
+      "design_fingerprint": "sha256:cf550a0d3d8f471529fce8d08faaf11483e991654bce9528ce64c2c0db4ca1cf",
+      "tasks_fingerprint": "sha256:c17debb641edec2c665bcadc6557652893568215735dd0e2b4d7fb805d1b5d3f",
+      "code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+      "profile": {
+        "platform": "linux/amd64",
+        "walden": "v0.14.0"
+      },
+      "steps": [
+        {
+          "command": [
+            "sh",
+            "-c",
+            "PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider test_behavior.py"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:a837324a2f5c0d804ee26513e45c3e17425242b25aba8e53fe57a7379e8a79a5"
+        },
+        {
+          "command": [
+            "sh",
+            "-c",
+            "grep -q 'utils.validate_name' service.py \u0026\u0026 grep -q 'utils.validate_email' service.py \u0026\u0026 grep -q 'utils.validate_age' service.py \u0026\u0026 ! grep -nE '\"@\" not in|\u003e 120|strip\\(\\) == \"\"' service.py \u0026\u0026 echo service-ok"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:b296350a90f808cdea431b7ca6351b6a860a0331ca81e6bee4ac665b8426d92e"
+        }
+      ],
+      "result": "passed",
+      "verified_at": "2026-11-13T11:43:58Z"
+    },
+    "1.3": {
+      "task_fingerprint": "sha256:ad721b75967be78ee7f2d7ca4e3b04cedd965a646b425e736bc456a8fe8d8c64",
+      "task_fingerprint_scheme": "walden/task-definition/v2",
+      "execution": {
+        "origin": "verify",
+        "policy": "verify-purity/v1",
+        "assertion_result": "passed",
+        "integrity": "pure",
+        "before_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+        "after_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37"
+      },
+      "requirements_fingerprint": "sha256:c88cccbdc4fd66ed361bd2e5081d04a14e6854e83f3c263545b7ae49bd5f65d1",
+      "design_fingerprint": "sha256:cf550a0d3d8f471529fce8d08faaf11483e991654bce9528ce64c2c0db4ca1cf",
+      "tasks_fingerprint": "sha256:c17debb641edec2c665bcadc6557652893568215735dd0e2b4d7fb805d1b5d3f",
+      "code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+      "profile": {
+        "platform": "linux/amd64",
+        "walden": "v0.14.0"
+      },
+      "steps": [
+        {
+          "command": [
+            "sh",
+            "-c",
+            "PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider test_behavior.py"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:c98726dcb0c9f0252e8160d23de79ed048961494c9d2bff5c5f7d6fc6c831163"
+        },
+        {
+          "command": [
+            "sh",
+            "-c",
+            "! grep -nE '\"@\" not in|\u003e 120|strip\\(\\) == \"\"' main.py \u0026\u0026 grep -q 'error: ' main.py \u0026\u0026 echo main-ok"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:b510c2caa53928568249226cb0b436428274197ddc142fc1e10b7c1ed0a34a62"
+        }
+      ],
+      "result": "passed",
+      "verified_at": "2026-11-13T11:43:58Z"
+    },
+    "1.4": {
+      "task_fingerprint": "sha256:dad1c5a47258733d08648279c4aec8b2409b0bd723749fa74df1648839b29cf4",
+      "task_fingerprint_scheme": "walden/task-definition/v2",
+      "execution": {
+        "origin": "verify",
+        "policy": "verify-purity/v1",
+        "assertion_result": "passed",
+        "integrity": "pure",
+        "before_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+        "after_code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37"
+      },
+      "requirements_fingerprint": "sha256:c88cccbdc4fd66ed361bd2e5081d04a14e6854e83f3c263545b7ae49bd5f65d1",
+      "design_fingerprint": "sha256:cf550a0d3d8f471529fce8d08faaf11483e991654bce9528ce64c2c0db4ca1cf",
+      "tasks_fingerprint": "sha256:c17debb641edec2c665bcadc6557652893568215735dd0e2b4d7fb805d1b5d3f",
+      "code_identity": "sha256:a0b873c3c298bdb0308ebc324d9c4c8f719e30daea150204fb08a9f333e9ad37",
+      "profile": {
+        "platform": "linux/amd64",
+        "walden": "v0.14.0"
+      },
+      "steps": [
+        {
+          "command": [
+            "sh",
+            "-c",
+            "grep -q '@' utils.py \u0026\u0026 ! grep -nE '\"@\" not in|\u003e 120|strip\\(\\) == \"\"' main.py service.py \u0026\u0026 echo central-ok"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:04c6a6f6c9f1505e643c714b3abbb9d02af32c8600473497b8b6a6a3c730043b"
+        },
+        {
+          "command": [
+            "sh",
+            "-c",
+            "PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider test_behavior.py"
+          ],
+          "expected_exit": 0,
+          "actual_exit": 0,
+          "output_digest": "sha256:c98726dcb0c9f0252e8160d23de79ed048961494c9d2bff5c5f7d6fc6c831163"
+        }
+      ],
+      "result": "passed",
+      "verified_at": "2026-11-13T11:43:58Z"
+    }
+  }
+}
